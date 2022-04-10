@@ -30,6 +30,11 @@ namespace API
 
             services.AddApplicationServices();
             services.AddSwaggerDocumentation();
+            services.AddCors(opt=>{opt.AddPolicy("CorsPolicy",policy=>
+            {
+                policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:4200");
+            });
+            });
  
             services.AddDbContext<StoreContext>(x => x.UseSqlite(_config.GetConnectionString("DefaultConnection")));
            
@@ -48,6 +53,7 @@ namespace API
 
             app.UseRouting();
             app.UseStaticFiles();
+            app.UseCors("CorsPolicy");
 
             app.UseAuthorization();
 
